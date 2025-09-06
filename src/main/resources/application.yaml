@@ -5,11 +5,11 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
+    registryFetchIntervalSeconds: 5
 
 spring:
   application:
     name: ApiGateway
-
   cloud:
     gateway:
       server:
@@ -24,3 +24,8 @@ spring:
               uri: lb://AuthMicroService
               predicates:
                 - Path=/auth/**
+
+            - id: mail-service
+              uri: lb://MailMicroService
+              predicates:
+                - Path=/mail-service/**
