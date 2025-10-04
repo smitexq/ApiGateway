@@ -29,3 +29,8 @@ spring:
               uri: lb://MailMicroService
               predicates:
                 - Path=/mail-service/**
+
+            - id: feed-service
+              uri: lb://EventFeedMicroService
+              predicates:
+                - Path=/feed-service/**
