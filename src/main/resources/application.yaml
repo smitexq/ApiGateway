@@ -1,6 +1,9 @@
 server:
   port: 8080
 
+jwt:
+  secret: bbbe63942371f996058cc1dadc3d299fdc209dcc75afb26c330e50286bbe6766
+
 eureka:
   client:
     service-url:
@@ -19,18 +22,51 @@ spring:
               uri: lb://UserProfileMicroService
               predicates:
                 - Path=/profile-service/**
+              filters:
+                - Jwt
+
+            - id: internal-api-profile-service
+              uri: lb://UserProfileMicroService
+              predicates:
+                - Path=/internal-api/profile-service/**
+              filters:
+                - RewritePath=/internal-api/profile-service/(?<remaining>.*), /profile-service/${remaining}
+
+
 
             - id: auth-service
               uri: lb://AuthMicroService
               predicates:
                 - Path=/auth/**
 
+
+
             - id: mail-service
               uri: lb://MailMicroService
               predicates:
                 - Path=/mail-service/**
+              filters:
+                - Jwt
+
+            - id: internal-api-mail-service
+              uri: lb://MailMicroService
+              predicates:
+                - Path=/internal-api/mail-service/**
+              filters:
+                - RewritePath=/internal-api/mail-service/(?<remaining>.*), /mail-service/${remaining}
+
+
 
             - id: feed-service
               uri: lb://EventFeedMicroService
               predicates:
                 - Path=/feed-service/**
+              filters:
+                - Jwt
+
+            - id: internal-api-feed-service
+              uri: lb://EventFeedMicroService
+              predicates:
+                - Path=/internal-api/feed-service/**
+              filters:
+                - RewritePath=/internal-api/feed-service/(?<remaining>.*), /feed-service/${remaining}
